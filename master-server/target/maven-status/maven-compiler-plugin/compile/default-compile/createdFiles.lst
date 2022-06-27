@@ -1,0 +1,14 @@
+com\replicated_log\master_server\broker\listener\AcksListener.class
+com\replicated_log\master_server\model\Item.class
+com\replicated_log\master_server\broker\config\AddSecondaryListenConfig.class
+com\replicated_log\master_server\broker\listener\AddSecondaryListener.class
+com\replicated_log\master_server\controller\rest\MasterRestController.class
+com\replicated_log\master_server\broker\service\AckService.class
+com\replicated_log\master_server\broker\config\ItemsSendConfig.class
+com\replicated_log\master_server\broker\service\AcksWaiter.class
+com\replicated_log\master_server\repository\InMemoryStorage.class
+com\replicated_log\master_server\service\MasterService.class
+com\replicated_log\master_server\service\MasterServiceImpl.class
+com\replicated_log\master_server\broker\config\AcksListenConfig.class
+com\replicated_log\master_server\repository\InMemoryStorageImpl.class
+com\replicated_log\master_server\AppMaster.class

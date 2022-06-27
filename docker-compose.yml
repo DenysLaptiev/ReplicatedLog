@@ -1,0 +1,62 @@
+version: '3.3'
+
+services:
+    #service 1: definition of mysql database
+    rabbitmq:
+      image: rabbitmq:3-management
+      container_name: rabbitmq  
+      restart: always
+      ports:
+        - "15672:15672"
+        - "5672:5672"
+    
+    #service 3: definition of your spring-boot app 
+    master-server:                        #it is just a name, which will be used only in this file.
+      image: replicated-log-master:2.0               #name of the image after dockerfile executes
+      container_name: replicated-log-master-container  #name of the container created from docker image
+      build:
+        context: master-server                          #docker file path (. means root directory)
+        dockerfile: Dockerfile              #docker file name
+      ports:
+        - "8080:8080"                       #docker containter port with your os port
+      restart: always
+      environment:
+        - SPRING_RABBITMQ_HOST=rabbitmq  
+      depends_on:                           #define dependencies of this app
+        - rabbitmq
+      command: sh -c './wait-for rabbitmq:5672 -- cmd' # ожидаем
+
+
+
+    secondary-server-1: #it is just a name, which will be used only in this file.
+      image: replicated-log-server-1:2.0               #name of the image after dockerfile executes
+      container_name: replicated-log-server-1-container  #name of the container created from docker image
+      build:
+        context: secondary-server-1                          #docker file path (. means root directory)
+        dockerfile: Dockerfile              #docker file name
+      ports:
+        - "8081:8081"                       #docker containter port with your os port
+      restart: always
+      environment:
+        - SPRING_RABBITMQ_HOST=rabbitmq
+      depends_on: #define dependencies of this app
+        - rabbitmq   #dependency name (which is defined with this name 'db' in this file earlier)
+        - master-server
+      command: sh -c './wait-for master-server:8080 -- cmd' # ожидаем
+
+
+    secondary-server-2: #it is just a name, which will be used only in this file.
+      image: replicated-log-server-2:2.0               #name of the image after dockerfile executes
+      container_name: replicated-log-server-2-container  #name of the container created from docker image
+      build:
+        context: secondary-server-2                          #docker file path (. means root directory)
+        dockerfile: Dockerfile              #docker file name
+      ports:
+        - "8082:8082"                       #docker containter port with your os port
+      restart: always
+      environment:
+        - SPRING_RABBITMQ_HOST=rabbitmq
+      depends_on: #define dependencies of this app
+        - rabbitmq   #dependency name (which is defined with this name 'db' in this file earlier)
+        - master-server
+      command: sh -c './wait-for master-server:8080 -- cmd' # ожидаем
