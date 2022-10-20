@@ -1,0 +1,14 @@
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\service\MasterServiceImpl.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\repository\InMemoryStorageImpl.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\model\Item.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\service\MasterService.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\repository\InMemoryStorage.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\listener\AddSecondaryListener.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\listener\AcksListener.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\config\ItemsSendConfig.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\AppMaster.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\service\AckService.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\config\AddSecondaryListenConfig.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\service\AcksWaiter.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\broker\config\AcksListenConfig.java
+C:\Yalantis\PROJECTS\Bench\ReplicatedLog\master-server\src\main\java\com\replicated_log\master_server\controller\rest\MasterRestController.java

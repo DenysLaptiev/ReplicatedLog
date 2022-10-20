@@ -1,0 +1,12 @@
+com\replicated_log\secondary_server_1\service\SecondaryServiceImpl.class
+com\replicated_log\secondary_server_1\controller\rest\SecondaryRestController.class
+com\replicated_log\secondary_server_1\repository\InMemoryStorageImpl.class
+com\replicated_log\secondary_server_1\broker\config\AckSendConfig.class
+com\replicated_log\secondary_server_1\AppSecondary1.class
+com\replicated_log\secondary_server_1\broker\listener\ItemsListener.class
+com\replicated_log\secondary_server_1\service\SecondaryService.class
+com\replicated_log\secondary_server_1\broker\config\ItemsListenConfig.class
+com\replicated_log\secondary_server_1\config\InitialDataConfiguration.class
+com\replicated_log\secondary_server_1\repository\InMemoryStorage.class
+com\replicated_log\secondary_server_1\broker\config\AddSecondarySendConfig.class
+com\replicated_log\secondary_server_1\model\Item.class
