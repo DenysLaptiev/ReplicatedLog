@@ -10,6 +10,8 @@ public class AckService {
 
     private static int secondariesNumber;
     private static int acksReceived;
+
+//    key=itemId, value=numberOfAcks
     private static Map<Integer, Integer> itemAcks = new HashMap<>();
 
     public int getSecondariesNumber() {
@@ -50,7 +52,4 @@ public class AckService {
         setSecondariesNumber(old + 1);
     }
 
-    public int getRemainedAcks() {
-        return getSecondariesNumber() - getAcksReceived();
-    }
 }

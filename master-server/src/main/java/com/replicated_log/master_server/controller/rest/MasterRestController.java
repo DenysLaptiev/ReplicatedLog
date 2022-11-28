@@ -34,6 +34,7 @@ public class MasterRestController {
         LOG.info("--> Start of appendItem POST method");
 
         Item itemToSend = masterService.addItem(item);
+        LOG.info("--> Added Item to Set of MasterServer");
         LOG.info("--> Set of MasterServer:" + masterService.getItems());
 
         ackService.addItemIdForAcks(itemToSend.getId());
@@ -49,7 +50,7 @@ public class MasterRestController {
 
     @PostMapping("/item/{w}")
     public ResponseEntity appendItem(@RequestBody Item item, @PathVariable int w) {
-        LOG.info("--> Start of appendItem POST method");
+        LOG.info("--> Start of appendItem POST method with write concern parameter w = " + w);
 
         Item itemToSend = masterService.addItem(item);
         LOG.info("--> Added Item to Set of MasterServer");
