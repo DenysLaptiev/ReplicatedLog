@@ -42,7 +42,7 @@ public class SecondaryRestController {
         LOG.info("--> Received Item - " + item.getText());
 
         LOG.info("--> Set of Secondary2Server:" + secondaryService.getItems());
-        secondaryService.simulateProcessing(3);
+        secondaryService.simulateProcessing(10);
 
         secondaryService.addItem(item);
         LOG.info("--> Added Item to Set of SecondaryServer");

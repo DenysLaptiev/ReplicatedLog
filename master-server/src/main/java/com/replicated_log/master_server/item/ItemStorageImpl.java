@@ -1,6 +1,5 @@
-package com.replicated_log.master_server.repository;
+package com.replicated_log.master_server.item;
 
-import com.replicated_log.master_server.model.Item;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

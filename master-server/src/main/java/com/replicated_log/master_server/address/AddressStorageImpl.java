@@ -1,6 +1,5 @@
-package com.replicated_log.master_server.repository;
+package com.replicated_log.master_server.address;
 
-import com.replicated_log.master_server.model.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;

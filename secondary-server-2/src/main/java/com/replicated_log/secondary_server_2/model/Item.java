@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Item implements Comparable<Item> {
     private Integer id;
     private String text;
+    private Integer w;
 
     @Override
     public int compareTo(Item o) {

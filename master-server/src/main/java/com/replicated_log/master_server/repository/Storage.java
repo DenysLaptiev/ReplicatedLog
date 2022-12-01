@@ -4,7 +4,7 @@ import java.util.Set;
 
 public interface Storage<T> {
 
-    T append(T item);
+    T append(T obj);
     Set<T> findAll();
     Set<T> getStorage();
 }

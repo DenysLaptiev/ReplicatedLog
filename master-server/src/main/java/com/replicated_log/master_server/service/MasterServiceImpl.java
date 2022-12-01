@@ -1,14 +1,11 @@
 package com.replicated_log.master_server.service;
 
-import com.replicated_log.master_server.model.Address;
-import com.replicated_log.master_server.model.Item;
-import com.replicated_log.master_server.repository.AddressStorage;
-import com.replicated_log.master_server.repository.ItemStorage;
+import com.replicated_log.master_server.item.Item;
+import com.replicated_log.master_server.item.ItemStorage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Set;
 
@@ -20,8 +17,6 @@ public class MasterServiceImpl implements MasterService {
     @Autowired
     private ItemStorage<Item> itemStorage;
 
-    @Autowired
-    private AddressStorage<Address> addressStorage;
 
     @Override
     public Item addItem(Item item) {
@@ -33,16 +28,7 @@ public class MasterServiceImpl implements MasterService {
         return itemStorage.findAll();
     }
 
-    @Override
-    public void addSecondaryAddress(Address address) {
-        addressStorage.append(address);
-    }
-
-    @Override
-    public Set<Address> getAllSecondaryAddresses() {
-        return addressStorage.findAll();
-    }
-
+/*
     @Override
     public void notifyAllSecondaries(Item item, boolean isAsync) {
         Set<Address> secondaryAddresses = getAllSecondaryAddresses();
@@ -61,4 +47,6 @@ public class MasterServiceImpl implements MasterService {
             }
         }
     }
+
+ */
 }

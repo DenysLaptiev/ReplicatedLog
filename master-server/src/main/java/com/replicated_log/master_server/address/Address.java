@@ -1,4 +1,4 @@
-package com.replicated_log.master_server.model;
+package com.replicated_log.master_server.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

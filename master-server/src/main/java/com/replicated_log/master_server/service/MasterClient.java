@@ -1,6 +1,6 @@
 package com.replicated_log.master_server.service;
 
-import com.replicated_log.master_server.model.Item;
+import com.replicated_log.master_server.item.Item;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
