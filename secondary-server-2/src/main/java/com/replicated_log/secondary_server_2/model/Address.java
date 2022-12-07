@@ -12,4 +12,9 @@ import lombok.ToString;
 @ToString
 public class Address {
     private String address;
+    private HealthStatus healthStatus;
+
+    public Address(String address) {
+        this.address = address;
+    }
 }

@@ -25,4 +25,9 @@ public class ItemServiceImpl implements ItemService {
     public Set<Item> getItems() {
         return itemStorage.findAll();
     }
+
+    @Override
+    public Item getItemById(Integer itemId) {
+        return itemStorage.getItemById(itemId);
+    }
 }

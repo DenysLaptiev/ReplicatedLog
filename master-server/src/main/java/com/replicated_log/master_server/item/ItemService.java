@@ -6,4 +6,6 @@ public interface ItemService {
 
     Item addItem(Item item);
     Set<Item> getItems();
+
+    Item getItemById(Integer itemId);
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private AddressStorage<Address> addressStorage;

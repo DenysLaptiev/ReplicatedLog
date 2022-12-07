@@ -7,5 +7,6 @@ import java.util.Set;
 public interface SecondaryService {
     boolean addItem(Item item);
     Set<Item> getItems();
+    Set<Item> getItemsForDemo();
     void simulateProcessing(int seconds);
 }

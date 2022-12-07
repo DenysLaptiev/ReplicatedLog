@@ -14,7 +14,17 @@ public class ItemStorageImpl implements ItemStorage<Item> {
 
     @Override
     public Item append(Item item) {
-        item.setId(++ITEM_ID);
+
+        Integer id = ++ITEM_ID;
+
+        //TODO:for testing of items order
+//        if(id.equals(3)){
+//            id = 4;
+//        }else if (id.equals(4)){
+//            id = 3;
+//        }
+
+        item.setId(id);
         getStorage().add(item);
         return item;
     }
@@ -30,5 +40,16 @@ public class ItemStorageImpl implements ItemStorage<Item> {
             items = new TreeSet<>();
         }
         return items;
+    }
+
+    @Override
+    public Item getItemById(Integer itemId) {
+        Set<Item> allItems = getStorage();
+        for (Item item : allItems) {
+            if(item.getId().equals(itemId)){
+                return item;
+            }
+        }
+        return null;
     }
 }

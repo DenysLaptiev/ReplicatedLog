@@ -3,9 +3,10 @@ package com.replicated_log.master_server.broker;
 import com.replicated_log.master_server.address.Address;
 import com.replicated_log.master_server.item.Item;
 
+import java.util.Map;
 import java.util.Set;
 
-public interface BrokerService {
+public interface BrokerRepository {
 
     Address addSecondaryServerToBrokerMap(Address secondaryServerAddress);
 
@@ -15,17 +16,5 @@ public interface BrokerService {
 
     Set<Item> addNotSentItemsToBrokerMap(Address secondaryServerAddress, Set<Item> notSentItems);
 
-
-    //TODO: remove this method
-    Set<Address> getAllSecondaryAddressesForItem(Item item);
-
-    //boolean publishToSecondaries(Item item);
-
-    void publishToSecondaries();
-
-    void publishItemToSecondary(Item item, Address secondaryServerAddress, int sleepMillis);
-
-    //boolean isAckForItemReceivedFromSecondary(Integer itemId, String secondaryServerName);
-
-    //void removeAckedItemsFromBrokerMap();
+    Map<Address, Set<Item>> getBrokerStorage();
 }

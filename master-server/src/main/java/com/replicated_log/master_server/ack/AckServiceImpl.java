@@ -1,7 +1,9 @@
 package com.replicated_log.master_server.ack;
 
-import com.replicated_log.master_server.controller.rest.MasterWithBrokerRestController;
+import com.replicated_log.master_server.address.Address;
+import com.replicated_log.master_server.broker.BrokerService;
 import com.replicated_log.master_server.item.Item;
+import com.replicated_log.master_server.item.ItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +19,21 @@ public class AckServiceImpl implements AckService {
     @Autowired
     private AckStorage<Ack> ackStorage;
 
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private BrokerService brokerService;
+
     @Override
-    public Integer addItemToItemAcksMap(Item item) {
+    public synchronized Integer addItemToItemAcksMap(Item item) {
         return ackStorage.addItemToItemAcksMap(item);
     }
 
     @Override
-    public void addAckForItem(Integer itemId, Ack ack) {
+    public synchronized void addAckForItem(Integer itemId, Ack ack) {
         ackStorage.addAckForItem(itemId, ack);
+        brokerService.removeItemFromBrokerMap(itemService.getItemById(itemId), new Address(ack.getServerAddress()));
     }
 
     @Override
@@ -33,7 +42,7 @@ public class AckServiceImpl implements AckService {
     }
 
     @Override
-    public int getNumberOfAcksOfItem(Integer itemId) {
+    public synchronized int getNumberOfAcksOfItem(Integer itemId) {
         LOG.info("--> itemId=" + itemId);
         LOG.info("--> ackStorage.getAllAcksOfItem(itemId).size()=" + ackStorage.getAllAcksOfItem(itemId).size());
         return ackStorage.getAllAcksOfItem(itemId).size();
