@@ -12,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class Ack implements Comparable<Ack> {
+
     private Integer id;
     private String serverAddress;
     private Integer itemId;
@@ -38,7 +39,7 @@ public class Ack implements Comparable<Ack> {
 
     @Override
     public int compareTo(Ack o) {
-        if(this.getItemId().equals(o.getItemId())){
+        if (this.getItemId().equals(o.getItemId())) {
             return this.getServerAddress().compareTo(o.getServerAddress());
         }
         return this.getItemId() - o.getItemId();

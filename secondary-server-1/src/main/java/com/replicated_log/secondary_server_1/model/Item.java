@@ -9,6 +9,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @ToString
 public class Item implements Comparable<Item> {
+
     private Integer id;
     private String text;
     private Integer w;

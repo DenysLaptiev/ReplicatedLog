@@ -1,9 +1,6 @@
 package com.replicated_log.master_server.service;
 
-import com.replicated_log.master_server.address.Address;
-import com.replicated_log.master_server.address.HealthStatus;
-import com.replicated_log.master_server.controller.rest.MasterWithBrokerRestController;
-import com.replicated_log.master_server.item.Item;
+import com.replicated_log.master_server.model.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +28,7 @@ public class MasterClient {
                 .block();
     }
 
+    //TODO: onErrorContinue ping ???
     public void notifySecondaryAsync(Item item) {
         webClient
                 .post()
@@ -39,25 +37,7 @@ public class MasterClient {
                 .bodyValue(item)
                 .retrieve()
                 .bodyToMono(Item.class)
-                .onErrorContinue((x,y)-> LOG.info("!-> Connection error: "+x.getMessage()))
+                .onErrorContinue((x, y) -> LOG.info("W--> MasterClient: Connection error: " + x.getMessage()))
                 .subscribe();
     }
-
-//    public void ping(Address address){
-//        webClient
-//                .get()
-//                .uri("/health")
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .retrieve()
-//                .bodyToMono(Object.class)
-//                .onErrorContinue((x,y)-> {
-//                    if(address.getHealthStatus().equals(HealthStatus.SUSPECTED)){
-//                        address.setHealthStatus(HealthStatus.UNHEALTHY);
-//                    } else if (address.getHealthStatus().equals(HealthStatus.HEALTHY)) {
-//                        address.setHealthStatus(HealthStatus.SUSPECTED);
-//                    }
-//                    LOG.info("!-> Connection error: "+x.getMessage());
-//                }).doOnNext()
-//                .subscribe();
-//    }
 }

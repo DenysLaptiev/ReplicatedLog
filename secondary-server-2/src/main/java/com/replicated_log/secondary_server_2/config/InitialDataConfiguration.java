@@ -10,8 +10,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
-import javax.annotation.PostConstruct;
-
 @Configuration
 public class InitialDataConfiguration {
 
@@ -26,8 +24,8 @@ public class InitialDataConfiguration {
     @EventListener(ApplicationReadyEvent.class)
     public void applicationReadyEvent() {
 
-        Address addr = new Address(SECONDARY_SERVER_BASE_URL);
-        secondaryClient.sendAddressToMaster(addr);
+        Address address = new Address(SECONDARY_SERVER_BASE_URL);
+        secondaryClient.sendAddressToMaster(address);
 
         LOG.info("--> Informed That Secondary2 Started");
     }
