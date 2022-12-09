@@ -30,7 +30,6 @@ public class SecondaryServiceImpl implements SecondaryService {
                 System.out.println((seconds - i) + "...");
                 Thread.sleep(1000);
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

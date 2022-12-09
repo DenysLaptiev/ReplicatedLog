@@ -19,9 +19,9 @@ import java.util.Set;
 @CrossOrigin("*")
 public class MasterRestController {
 
-    public static final String MASTER_URL = "/master";
-
     private final Logger LOG = LogManager.getLogger(MasterRestController.class);
+
+    public static final String MASTER_URL = "/master";
 
     @Autowired
     private MasterService masterService;

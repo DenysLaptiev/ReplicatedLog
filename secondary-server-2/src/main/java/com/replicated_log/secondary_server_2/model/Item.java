@@ -1,6 +1,9 @@
 package com.replicated_log.secondary_server_2.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Objects;
 
@@ -9,6 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @ToString
 public class Item implements Comparable<Item> {
+
     private Integer id;
     private String text;
 
