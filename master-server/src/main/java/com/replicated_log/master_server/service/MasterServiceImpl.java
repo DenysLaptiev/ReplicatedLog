@@ -1,6 +1,5 @@
 package com.replicated_log.master_server.service;
 
-import com.replicated_log.master_server.controller.rest.MasterRestController;
 import com.replicated_log.master_server.model.Address;
 import com.replicated_log.master_server.model.Item;
 import com.replicated_log.master_server.repository.AddressStorage;
@@ -49,7 +48,7 @@ public class MasterServiceImpl implements MasterService {
         List<Address> secondaryAddresses = getAllSecondaryAddresses();
 
         LOG.info("--> notifyAllSecondaries method");
-        LOG.info("--> secondaryAddresses="+secondaryAddresses);
+        LOG.info("--> secondaryAddresses=" + secondaryAddresses);
 
         MasterClient masterClient;
         for (Address address : secondaryAddresses) {
@@ -63,7 +62,7 @@ public class MasterServiceImpl implements MasterService {
     public void simulateProcessing(int seconds) {
         try {
             for (int i = 0; i < seconds; i++) {
-                System.out.println((seconds - i)+ "...");
+                System.out.println((seconds - i) + "...");
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {

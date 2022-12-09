@@ -19,10 +19,10 @@ import java.util.List;
 @RequestMapping(SecondaryRestController.SECONDARY_2_URL)
 public class SecondaryRestController {
 
+    private final Logger LOG = LogManager.getLogger(SecondaryRestController.class);
+
     public static final String SECONDARY_2_URL = "/secondary2";
     public final String SECONDARY_SERVER_NAME = "Secondary2";
-
-    private final Logger LOG = LogManager.getLogger(SecondaryRestController.class);
 
     @Autowired
     private SecondaryService secondaryService;

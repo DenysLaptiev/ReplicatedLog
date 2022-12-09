@@ -19,9 +19,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class MasterRestController {
 
-    public static final String MASTER_URL = "/master";
-
     private final Logger LOG = LogManager.getLogger(MasterRestController.class);
+
+    public static final String MASTER_URL = "/master";
 
     @Autowired
     private MasterService masterService;
@@ -48,7 +48,6 @@ public class MasterRestController {
     @GetMapping("/items")
     public ResponseEntity<List<Item>> findAllItems() {
         List<Item> items = masterService.getItems();
-        LOG.info("--> Get Items List of MasterServer");
         return ResponseEntity.ok(items);
     }
 
@@ -65,7 +64,6 @@ public class MasterRestController {
     @GetMapping("/addresses")
     public ResponseEntity<List<Address>> getAllSecondaryAddresses() {
         List<Address> addresses = masterService.getAllSecondaryAddresses();
-        LOG.info("--> Get Secondary Addresses List of MasterServer");
         return ResponseEntity.ok(addresses);
     }
 

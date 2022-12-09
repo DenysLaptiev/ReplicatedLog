@@ -27,10 +27,9 @@ public class SecondaryServiceImpl implements SecondaryService {
     public void simulateProcessing(int seconds) {
         try {
             for (int i = 0; i < seconds; i++) {
-                System.out.println((seconds - i)+ "...");
+                System.out.println((seconds - i) + "...");
                 Thread.sleep(1000);
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
