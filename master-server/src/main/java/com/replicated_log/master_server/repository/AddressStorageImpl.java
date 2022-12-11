@@ -19,8 +19,6 @@ public class AddressStorageImpl implements AddressStorage<Address> {
     public synchronized boolean append(Address address) {
 
         LOG.info("--> AddressStorageImpl append method");
-        LOG.info("--> addresses=" + address);
-
         return getStorage().add(address);
     }
 
