@@ -41,7 +41,7 @@ public class SecondaryRestController {
         LOG.info("--> Received Item - " + item.getText());
 
         LOG.info("--> Set of Secondary1Server:" + secondaryService.getItems());
-        secondaryService.simulateProcessing(30);
+        secondaryService.simulateProcessing(15);
 
         secondaryService.addItem(item);
         LOG.info("--> Added Item to Set of SecondaryServer");

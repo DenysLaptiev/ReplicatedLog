@@ -65,7 +65,7 @@ public class MasterRestController {
             //LOG.info("--> Waiting for " + (w - ackService.getAllAcksReceivedForItemId(itemToSend.getId())) + " ack(s) from Secondary Server(s)...");
         }
 
-        LOG.info("--> Received all ACKs");
+        LOG.info("--> Received all required ACKs");
         LOG.info("--> Set of MasterServer:" + masterService.getItems());
 
         LOG.info("--> End of appendItem POST method");
