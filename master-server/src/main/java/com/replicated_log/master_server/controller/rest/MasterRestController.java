@@ -86,6 +86,7 @@ public class MasterRestController {
         masterService.addSecondaryAddress(address);
         LOG.info("--> added Secondary address: " + address.getAddress());
         ackService.incrementSecondariesNumber();
+        LOG.info("--> All Secondary addresses: " + masterService.getAllSecondaryAddresses());
         return ResponseEntity.ok(address);
     }
 
