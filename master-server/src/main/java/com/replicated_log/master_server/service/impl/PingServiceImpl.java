@@ -33,7 +33,6 @@ public class PingServiceImpl implements PingService {
             @Override
             public void run() {
                 while (runPing) {
-                    //TODO:check this
                     ping();
                     sleepMethod(1000);
                 }
@@ -67,11 +66,7 @@ public class PingServiceImpl implements PingService {
             HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(3000);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
 
-            //TODO:check this
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             connection.connect();
             code = connection.getResponseCode();
             if (code == 200) {

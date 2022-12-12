@@ -23,12 +23,14 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         Integer id = ++ITEM_ID;
 
-        //TODO:for testing of items order
-//        if(id.equals(3)){
-//            id = 4;
-//        }else if (id.equals(4)){
-//            id = 3;
-//        }
+        //this lines if uncommented can be used for testing of items order
+        /*
+        if(id.equals(3)){
+            id = 4;
+        }else if (id.equals(4)){
+            id = 3;
+        }
+        */
 
         item.setId(id);
         getStorage().add(item);

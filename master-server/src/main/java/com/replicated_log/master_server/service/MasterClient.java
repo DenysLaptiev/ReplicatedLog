@@ -28,7 +28,6 @@ public class MasterClient {
                 .block();
     }
 
-    //TODO: onErrorContinue ping ???
     public void notifySecondaryAsync(Item item) {
         webClient
                 .post()
