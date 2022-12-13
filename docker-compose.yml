@@ -1,0 +1,55 @@
+version: '3.3'
+
+networks:
+  replicated-network:
+    external: false
+
+services:
+
+  #service definition of spring-boot app
+  master-server:                                      #it is just a name, which will be used only in this file.
+    image: replicated-log-master:2.0                  #name of the image after dockerfile executes
+    networks:
+      - replicated-network
+    container_name: replicated-log-master-container   #name of the container created from docker image
+    build:
+      context: master-server                          #docker file path (. means root directory)
+      dockerfile: Dockerfile                          #docker file name
+    ports:
+      - "8080:8080"                                   #docker container port with os port
+    restart: always
+
+
+
+  secondary-server-1:                                #it is just a name, which will be used only in this file.
+    image: replicated-log-server-1:2.0               #name of the image after dockerfile executes
+    networks:
+      - replicated-network
+    container_name: replicated-log-server-1-container  #name of the container created from docker image
+    build:
+      context: secondary-server-1                    #docker file path (. means root directory)
+      dockerfile: Dockerfile                         #docker file name
+    ports:
+      - "8081:8081"                                  #docker container port with os port
+    restart: always
+    depends_on:                                      #define dependencies of this app
+      - master-server                                #dependency name (which is defined with this name 'master-server' in this file earlier)
+    command: sh -c './wait-for master-server:8080 -- ./java -jar /app/app.jar' # waiting for start of 'master-server'
+
+
+
+  secondary-server-2:                                #it is just a name, which will be used only in this file.
+    image: replicated-log-server-2:2.0               #name of the image after dockerfile executes
+    networks:
+      - replicated-network
+    container_name: replicated-log-server-2-container  #name of the container created from docker image
+    build:
+      context: secondary-server-2                    #docker file path (. means root directory)
+      dockerfile: Dockerfile                         #docker file name
+    ports:
+      - "8082:8082"                                  #docker container port with os port
+    restart: always
+    depends_on:                                      #define dependencies of this app
+      - master-server                                #dependency name (which is defined with this name 'master-server' in this file earlier)
+    command: sh -c './wait-for master-server:8080 -- ./java -jar /app/app.jar' # waiting for start of 'master-server'
+
