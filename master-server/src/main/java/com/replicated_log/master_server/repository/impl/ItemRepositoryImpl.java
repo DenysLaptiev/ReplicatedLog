@@ -2,17 +2,15 @@ package com.replicated_log.master_server.repository.impl;
 
 import com.replicated_log.master_server.model.Item;
 import com.replicated_log.master_server.repository.ItemRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.TreeSet;
 
 @Component
+@Slf4j
 public class ItemRepositoryImpl implements ItemRepository {
-
-    private final Logger LOG = LogManager.getLogger(ItemRepositoryImpl.class);
 
     private static Integer ITEM_ID = 0;
 
@@ -34,20 +32,15 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         item.setId(id);
         getStorage().add(item);
-        LOG.info("R--> ItemRepositoryImpl: Added item to storage " + item);
+        log.info("R--> ItemRepositoryImpl: Added item to storage " + item);
         return item;
-    }
-
-    @Override
-    public Set<Item> findAll() {
-        return getStorage();
     }
 
     @Override
     public Item getItemById(Integer itemId) {
         Set<Item> allItems = getStorage();
         for (Item item : allItems) {
-            if(item.getId().equals(itemId)){
+            if (item.getId().equals(itemId)) {
                 return item;
             }
         }

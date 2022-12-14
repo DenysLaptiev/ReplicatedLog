@@ -1,26 +1,20 @@
 package com.replicated_log.master_server.service;
 
 import com.replicated_log.master_server.model.Item;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
+@Slf4j
 public class MasterClient {
 
-    private final Logger LOG = LogManager.getLogger(MasterClient.class);
+    private final WebClient webClient = WebClient.create();
 
-    private WebClient webClient;
-
-    public MasterClient(WebClient webClient) {
-        this.webClient = webClient;
-    }
-
-    public void notifySecondary(Item item) {
+    public void notifySecondary(Item item, String baseUrl) {
         webClient
                 .post()
-                .uri("/item")
+                .uri(baseUrl + "/item")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .bodyValue(item)
                 .retrieve()
@@ -28,15 +22,15 @@ public class MasterClient {
                 .block();
     }
 
-    public void notifySecondaryAsync(Item item) {
+    public void notifySecondaryAsync(Item item, String baseUrl) {
         webClient
                 .post()
-                .uri("/item")
+                .uri(baseUrl + "/item")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .bodyValue(item)
                 .retrieve()
                 .bodyToMono(Item.class)
-                .onErrorContinue((x, y) -> LOG.info("W--> MasterClient: Connection error: " + x.getMessage()))
+                .onErrorContinue((x, y) -> log.info("W--> MasterClient: Connection error: " + x.getMessage()))
                 .subscribe();
     }
 }

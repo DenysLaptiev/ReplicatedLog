@@ -3,30 +3,28 @@ package com.replicated_log.master_server.service.impl;
 import com.replicated_log.master_server.model.Item;
 import com.replicated_log.master_server.repository.ItemRepository;
 import com.replicated_log.master_server.service.ItemService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final Logger LOG = LogManager.getLogger(ItemServiceImpl.class);
-
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public Item addItem(Item item) {
-        LOG.info("S--> ItemServiceImpl: Adding item " + item);
+        log.info("S--> ItemServiceImpl: Adding item " + item);
         return itemRepository.append(item);
     }
 
     @Override
     public Set<Item> getItems() {
-        return itemRepository.findAll();
+        return itemRepository.getStorage();
     }
 
     @Override

@@ -8,7 +8,5 @@ public interface AddressRepository {
 
     Address append(Address address);
 
-    Set<Address> findAll();
-
     Set<Address> getStorage();
 }

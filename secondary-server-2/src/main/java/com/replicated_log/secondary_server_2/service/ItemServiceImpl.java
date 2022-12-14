@@ -2,23 +2,21 @@ package com.replicated_log.secondary_server_2.service;
 
 import com.replicated_log.secondary_server_2.model.Item;
 import com.replicated_log.secondary_server_2.repository.ItemRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.TreeSet;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
-
-    private final Logger LOG = LogManager.getLogger(ItemServiceImpl.class);
 
     private final Integer FIRST_ID_OF_DEMO_ITEMS = 1;
 
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public boolean addItem(Item item) {
@@ -27,12 +25,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Set<Item> getItems() {
-        return itemRepository.findAll();
+        return itemRepository.getStorage();
     }
 
     @Override
     public Set<Item> getItemsForDemo() {
-        Set<Item> allItems = itemRepository.findAll();
+        Set<Item> allItems = itemRepository.getStorage();
         Set<Item> demoItems = new TreeSet<>();
         Integer firstIdOfDemoItems = FIRST_ID_OF_DEMO_ITEMS;
         Integer idOfDemoItem = firstIdOfDemoItems;
@@ -44,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
                 return demoItems;
             }
         }
-        LOG.info("S--> ItemServiceImpl: Items for demo " + demoItems);
+        log.info("S--> ItemServiceImpl: Items for demo " + demoItems);
         return demoItems;
     }
 

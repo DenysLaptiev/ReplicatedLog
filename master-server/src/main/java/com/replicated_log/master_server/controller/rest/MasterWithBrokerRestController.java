@@ -1,17 +1,8 @@
 package com.replicated_log.master_server.controller.rest;
 
-import com.replicated_log.master_server.model.Ack;
-import com.replicated_log.master_server.service.AckService;
-import com.replicated_log.master_server.model.AckStatusCode;
-import com.replicated_log.master_server.model.Address;
-import com.replicated_log.master_server.service.AddressService;
-import com.replicated_log.master_server.model.HealthStatus;
-import com.replicated_log.master_server.service.BrokerService;
-import com.replicated_log.master_server.model.Item;
-import com.replicated_log.master_server.service.ItemService;
-import com.replicated_log.master_server.service.PingService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.replicated_log.master_server.model.*;
+import com.replicated_log.master_server.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,34 +15,37 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 @RestController
 @RequestMapping(MasterWithBrokerRestController.MASTER_URL)
 @CrossOrigin("*")
+@Slf4j
 public class MasterWithBrokerRestController {
-
-    private final Logger LOG = LogManager.getLogger(MasterWithBrokerRestController.class);
 
     public static final String MASTER_URL = "/master";
 
-    @Value("${master.server.baseurl}")
-    private String MASTER_SERVER_BASE_URL;
+    private final String MASTER_SERVER_BASE_URL;
+
+    private final ItemService itemService;
+    private final AddressService addressService;
+    private final AckService ackService;
+    private final BrokerService brokerService;
+    private final PingService pingService;
 
     @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    private AddressService addressService;
-
-    @Autowired
-    private AckService ackService;
-
-    @Autowired
-    private BrokerService brokerService;
-
-    @Autowired
-    private PingService pingService;
-
+    public MasterWithBrokerRestController(ItemService itemService,
+                                          AddressService addressService,
+                                          AckService ackService,
+                                          BrokerService brokerService,
+                                          PingService pingService,
+                                          @Value("${master.server.baseurl}") String masterServerBaseUrl) {
+        this.itemService = itemService;
+        this.addressService = addressService;
+        this.ackService = ackService;
+        this.brokerService = brokerService;
+        this.pingService = pingService;
+        this.MASTER_SERVER_BASE_URL = masterServerBaseUrl;
+    }
 
     @PostMapping("/item/{w}")
-    public ResponseEntity appendItem(@RequestBody Item item, @PathVariable int w) {
-        LOG.info("С--> Start appendItem POST, w = " + w);
+    public ResponseEntity<String> appendItem(@RequestBody Item item, @PathVariable int w) {
+        log.info("С--> Start appendItem POST, w = " + w);
 
         if (!pingService.hasQuorum()) {
             return ResponseEntity.status(SERVICE_UNAVAILABLE).body("There is no quorum. Master switched into read-only mode and doesn`t accept messages append requests");
@@ -60,8 +54,8 @@ public class MasterWithBrokerRestController {
         item.setW(w);
 
         Item itemToSend = itemService.addItem(item);
-        LOG.info("С--> Added to Master: " + itemToSend);
-        LOG.info("С--> Set of Master:" + itemService.getItems());
+        log.info("С--> Added to Master: " + itemToSend);
+        log.info("С--> Set of Master:" + itemService.getItems());
 
         ackService.addItemToItemAcksMap(itemToSend);
         //because one ack is from Master
@@ -73,11 +67,11 @@ public class MasterWithBrokerRestController {
             //LOG.info("С--> Waiting for " + (w - ackService.getAllAcksOfItem(itemToSend.getId()).size()) + " ack(s) from Secondary Server(s)...");
         }
 
-        LOG.info("С--> Received all ACKs");
-        LOG.info("С--> Set of Master:" + itemService.getItems());
+        log.info("С--> Received all ACKs");
+        log.info("С--> Set of Master:" + itemService.getItems());
 
-        LOG.info("С--> Finish appendItem POST");
-        return ResponseEntity.ok(itemToSend);
+        log.info("С--> Finish appendItem POST");
+        return ResponseEntity.ok(itemToSend.toString());
     }
 
 
@@ -93,7 +87,7 @@ public class MasterWithBrokerRestController {
 
         address.setHealthStatus(HealthStatus.HEALTHY);
         addressService.addSecondaryAddress(address);
-        LOG.info("С--> Added Secondary address: " + address.getAddress());
+        log.info("С--> Added Secondary address: " + address.getAddress());
 
         brokerService.addSecondaryServerToBrokerMap(address);
 
@@ -112,7 +106,7 @@ public class MasterWithBrokerRestController {
 
     @PostMapping(value = "/receive-ack")
     public ResponseEntity<Ack> receiveAck(@RequestBody Ack ack) {
-        LOG.info("С--> Received ACK for ItemId=" + ack.getItemId() + " from Secondary " + ack.getServerAddress() + ": " + ack.getAckStatusCode());
+        log.info("С--> Received ACK for ItemId=" + ack.getItemId() + " from Secondary " + ack.getServerAddress() + ": " + ack.getAckStatusCode());
         if (AckStatusCode.SUCCESS.equals(ack.getAckStatusCode())) {
             ackService.addAckForItem(ack.getItemId(), ack);
         }

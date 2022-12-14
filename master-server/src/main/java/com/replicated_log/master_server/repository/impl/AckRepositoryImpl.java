@@ -3,8 +3,7 @@ package com.replicated_log.master_server.repository.impl;
 import com.replicated_log.master_server.model.Ack;
 import com.replicated_log.master_server.model.Item;
 import com.replicated_log.master_server.repository.AckRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -13,9 +12,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 @Component
+@Slf4j
 public class AckRepositoryImpl implements AckRepository {
-
-    private final Logger LOG = LogManager.getLogger(AckRepositoryImpl.class);
 
     private static Integer ACK_ID = 0;
 
@@ -29,7 +27,7 @@ public class AckRepositoryImpl implements AckRepository {
         if (!itemAcks.containsKey(itemId)) {
             itemAcks.put(itemId, new TreeSet<>());
         }
-        LOG.info("R--> AckRepositoryImpl: Added item to storage " + item);
+        log.info("R--> AckRepositoryImpl: Added item to storage " + item);
         return itemId;
     }
 
@@ -39,7 +37,7 @@ public class AckRepositoryImpl implements AckRepository {
         if (itemAcks.containsKey(itemId)) {
             ack.setId(++ACK_ID);
             itemAcks.get(itemId).add(ack);
-            LOG.info("R--> AckRepositoryImpl: Added ack for itemId=" + itemId);
+            log.info("R--> AckRepositoryImpl: Added ack for itemId=" + itemId);
         }
     }
 

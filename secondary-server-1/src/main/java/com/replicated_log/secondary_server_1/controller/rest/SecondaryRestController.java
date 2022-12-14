@@ -3,12 +3,12 @@ package com.replicated_log.secondary_server_1.controller.rest;
 import com.replicated_log.secondary_server_1.model.Ack;
 import com.replicated_log.secondary_server_1.model.AckStatusCode;
 import com.replicated_log.secondary_server_1.model.Item;
-import com.replicated_log.secondary_server_1.service.SecondaryClient;
 import com.replicated_log.secondary_server_1.service.ItemService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.replicated_log.secondary_server_1.service.SecondaryClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +17,27 @@ import java.util.Set;
 @RestController
 @RequestMapping(SecondaryRestController.SECONDARY_1_URL)
 @CrossOrigin("*")
+@Slf4j
 public class SecondaryRestController {
-
-    private final Logger LOG = LogManager.getLogger(SecondaryRestController.class);
 
     public static final String SECONDARY_1_URL = "/secondary1";
     public final String SECONDARY_SERVER_NAME = "Secondary1";
 
-    @Value("${secondary.server.baseurl}")
-    private String SECONDARY_SERVER_BASE_URL;
+    private static final int PROCESSING_SECONDS = 5;
+
+    private final String SECONDARY_SERVER_BASE_URL;
+
+    private final ItemService itemService;
+    private final SecondaryClient secondaryClient;
 
     @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    private SecondaryClient secondaryClient;
+    public SecondaryRestController(ItemService itemService,
+                                   SecondaryClient secondaryClient,
+                                   @Value("${secondary.server.baseurl}") String secondaryServerBaseUrl) {
+        this.itemService = itemService;
+        this.secondaryClient = secondaryClient;
+        this.SECONDARY_SERVER_BASE_URL = secondaryServerBaseUrl;
+    }
 
     @GetMapping("/items")
     public ResponseEntity<Set<Item>> findAllItems() {
@@ -47,24 +53,24 @@ public class SecondaryRestController {
 
     @PostMapping(value = "/item")
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
-        LOG.info("C--> Received Item - " + item.getText());
+        log.info("C--> Received Item - " + item.getText());
 
-        LOG.info("C--> Set of " + SECONDARY_SERVER_NAME + ":" + itemService.getItems());
-        itemService.simulateProcessing(5);
+        log.info("C--> Set of " + SECONDARY_SERVER_NAME + ":" + itemService.getItems());
+        itemService.simulateProcessing(PROCESSING_SECONDS);
 
         itemService.addItem(item);
-        LOG.info("C--> Added Item to " + SECONDARY_SERVER_NAME);
-        LOG.info("C--> Set of " + SECONDARY_SERVER_NAME + ":" + itemService.getItems());
+        log.info("C--> Added Item to " + SECONDARY_SERVER_NAME);
+        log.info("C--> Set of " + SECONDARY_SERVER_NAME + ":" + itemService.getItems());
 
         secondaryClient.sendAckToMaster(new Ack(SECONDARY_SERVER_BASE_URL, item.getId(), AckStatusCode.SUCCESS));
-        LOG.info("C--> Sent Ack to Master");
+        log.info("C--> Sent Ack to Master");
 
         return ResponseEntity.ok(item);
     }
 
     @GetMapping("/health")
-    public ResponseEntity health() {
-        LOG.info("C--> Check health of " + SECONDARY_SERVER_NAME);
+    public ResponseEntity<HttpStatus> health() {
+        log.info("C--> Check health of " + SECONDARY_SERVER_NAME);
         return ResponseEntity.ok().build();
     }
 }

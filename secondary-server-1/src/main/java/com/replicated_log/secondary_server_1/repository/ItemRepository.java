@@ -8,7 +8,5 @@ public interface ItemRepository {
 
     boolean append(Item item);
 
-    Set<Item> findAll();
-
     Set<Item> getStorage();
 }

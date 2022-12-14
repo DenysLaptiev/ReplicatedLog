@@ -4,8 +4,7 @@ import com.replicated_log.master_server.model.Address;
 import com.replicated_log.master_server.model.HealthStatus;
 import com.replicated_log.master_server.service.AddressService;
 import com.replicated_log.master_server.service.PingService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,17 +14,21 @@ import java.net.URL;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class PingServiceImpl implements PingService {
 
-    private final Logger LOG = LogManager.getLogger(PingServiceImpl.class);
+    private final Integer quorum;
 
-    @Value("${server.quorum}")
-    private Integer QUORUM;
+    private final AddressService addressService;
 
     private static boolean runPing = false;
 
     @Autowired
-    private AddressService addressService;
+    public PingServiceImpl(AddressService addressService,
+                           @Value("${server.quorum}") Integer quorum) {
+        this.addressService = addressService;
+        this.quorum = quorum;
+    }
 
     @Override
     public void runPing() {
@@ -77,14 +80,14 @@ public class PingServiceImpl implements PingService {
         } catch (Exception e) {
             resultHealthStatus = HealthStatus.UNHEALTHY;
         }
-        LOG.info("S--> PingServiceImpl: Health check. Address=" + baseUrl + " Health status=" + resultHealthStatus);
+        log.info("S--> PingServiceImpl: Health check. Address=" + baseUrl + " Health status=" + resultHealthStatus);
         return resultHealthStatus;
     }
 
     @Override
     public boolean hasQuorum() {
         Set<Address> allSecondaryAddresses = addressService.getAllSecondaryAddresses();
-        if (allSecondaryAddresses.size() < QUORUM - 1) {
+        if (allSecondaryAddresses.size() < quorum - 1) {
             return false;
         }
         int healthSecondariesNumber = 0;
@@ -94,13 +97,13 @@ public class PingServiceImpl implements PingService {
                 healthSecondariesNumber++;
             }
         }
-        return healthSecondariesNumber >= QUORUM - 1;
+        return healthSecondariesNumber >= quorum - 1;
     }
 
     public void startPing() {
         if (!runPing) {
             runPing = true;
-            LOG.info("S--> PingServiceImpl: Start ping");
+            log.info("S--> PingServiceImpl: Start ping");
             runPing();
         }
     }

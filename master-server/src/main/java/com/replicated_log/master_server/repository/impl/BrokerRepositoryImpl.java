@@ -3,8 +3,7 @@ package com.replicated_log.master_server.repository.impl;
 import com.replicated_log.master_server.model.Address;
 import com.replicated_log.master_server.model.Item;
 import com.replicated_log.master_server.repository.BrokerRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
@@ -13,9 +12,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Component
+@Slf4j
 public class BrokerRepositoryImpl implements BrokerRepository {
-
-    private final Logger LOG = LogManager.getLogger(BrokerRepositoryImpl.class);
 
     private Map<Address, Set<Item>> brokerStorage;
 
@@ -24,7 +22,7 @@ public class BrokerRepositoryImpl implements BrokerRepository {
         Map<Address, Set<Item>> brokerStorage = getBrokerStorage();
         if (!brokerStorage.containsKey(secondaryServerAddress)) {
             brokerStorage.put(secondaryServerAddress, new TreeSet<>());
-            LOG.info("R--> BrokerRepositoryImpl: Added address to broker " + secondaryServerAddress);
+            log.info("R--> BrokerRepositoryImpl: Added address to broker " + secondaryServerAddress);
         }
         return secondaryServerAddress;
     }
@@ -37,7 +35,7 @@ public class BrokerRepositoryImpl implements BrokerRepository {
             items.add(item);
             brokerStorage.put(secondaryServerAddress, items);
         }
-        LOG.info("R--> BrokerRepositoryImpl: Added item to broker " + item);
+        log.info("R--> BrokerRepositoryImpl: Added item to broker " + item);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class BrokerRepositoryImpl implements BrokerRepository {
         for (Address address : brokerStorage.keySet()) {
             if (address.equals(secondaryServerAddress)) {
                 brokerStorage.get(address).remove(item);
-                LOG.info("R--> BrokerRepositoryImpl: Removed item from broker. Item=" + item + "Address=" + secondaryServerAddress);
+                log.info("R--> BrokerRepositoryImpl: Removed item from broker. Item=" + item + "Address=" + secondaryServerAddress);
             }
         }
     }
@@ -62,7 +60,7 @@ public class BrokerRepositoryImpl implements BrokerRepository {
         }
         items.addAll(notSentItems);
         brokerStorage.put(secondaryServerAddress, items);
-        LOG.info("R--> BrokerRepositoryImpl: Added items to broker " + notSentItems);
+        log.info("R--> BrokerRepositoryImpl: Added items to broker " + notSentItems);
         return items;
     }
 

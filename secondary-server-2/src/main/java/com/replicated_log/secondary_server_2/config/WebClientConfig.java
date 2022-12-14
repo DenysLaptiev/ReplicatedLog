@@ -9,8 +9,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    @Value("${master.server.baseurl}")
-    private String MASTER_SERVER_BASE_URL;
+    private final String MASTER_SERVER_BASE_URL;
+
+    public WebClientConfig(@Value("${master.server.baseurl}") String masterServerBaseUrl) {
+        this.MASTER_SERVER_BASE_URL = masterServerBaseUrl;
+    }
 
     @Bean
     public WebClient getWebClient(WebClient.Builder webClientBuilder) {
